@@ -9,7 +9,8 @@ var key string
 
 func main() {
 
-	var ok bool
+  Init()
+	var ok
 	// Access environment variable
 	key, ok = os.LookupEnv("HACKMAN_API_KEY")
 	if !ok {
