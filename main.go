@@ -17,6 +17,8 @@ func main() {
 
 	var word HangmanWord
 
+	Init()
+
 	key, ok := os.LookupEnv("HACKMAN_API_KEY")
 	if !ok {
 		log.Fatalln("missing API key in env")
