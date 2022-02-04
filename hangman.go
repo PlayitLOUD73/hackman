@@ -5,16 +5,27 @@ import (
 	"log"
 )
 
+// Letter is letter information for
+// a list of letters. It is meant to
+// be used in an array to determine what
+// letter it is.
 type Letter struct {
 	inWord  bool
 	guessed bool
 }
 
+// WordLetter is a letter and if it has
+// been guessed or not. It is uesd in
+// WordInfo.
 type WordLetter struct {
-	abc     byte
+	abc     byte // letter
 	guessed bool
 }
 
+// WordInfo is information regarding a word
+// to be used for guessing. It includes the
+// word in string form, list of letters, and
+// word length.
 type WordInfo struct {
 	word   string
 	list   []WordLetter
@@ -24,6 +35,9 @@ type WordInfo struct {
 var list [26]Letter
 var Ans WordInfo // answer
 
+// charToNum is a function to convert a letter
+// from the alphabet (in byte form) to its
+// corresponding position in the alphabet.
 func charToNum(c byte) int {
 	switch c {
 
@@ -85,18 +99,23 @@ func charToNum(c byte) int {
 	return 0
 }
 
+// Setup initializes the data necessary
+// for the game to run. It takes in a
+// length to determine the size of the word.
 func Setup(length int) {
 
 	Ans.word = GetWord(length)
 	Ans.length = len(Ans.word)
 	fmt.Printf("%s\n", Ans.word)
 
+	// initializes Ans
 	for i := 0; i < len(Ans.word); i++ {
 		var temp WordLetter
 		temp.abc = Ans.word[i]
 		Ans.list = append(Ans.list, temp)
 	}
 
+	// initializes list of letters
 	for i := 0; i < 26; i++ {
 		for j := 0; j < len(Ans.word); j++ {
 			if charToNum(Ans.word[j]) == i {
@@ -110,6 +129,10 @@ func Setup(length int) {
 
 }
 
+// inWord determines if a particular letter
+// is in the word. The function returns true
+// if the letter is in the word and false if
+// it is not.
 func inWord(c byte) bool {
 
 	for i := 0; i < len(Ans.word); i++ {
