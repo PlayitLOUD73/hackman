@@ -23,9 +23,8 @@ func main() {
 	API_KEY = "" // placeholder
 
 	resp, err := http.Get(API_ENDPOINT + "?key=" + API_KEY)
-
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("cannot connect to api: ", err)
 	}
 
 	defer resp.Body.Close()
@@ -33,7 +32,7 @@ func main() {
 
 	err = json.Unmarshal(bodyBytes, &word)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("unable to unmarshall json: ", err)
 	}
 	fmt.Printf("%s\n", word.Word)
 
