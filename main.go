@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
@@ -17,6 +16,8 @@ func main() {
 		log.Fatalln("missing API key in env")
 	}
 
-	fmt.Printf("%s\n", GetWord(-1))
+	//fmt.Printf("%s\n", GetWord(-1))
+
+	Setup(5)
 
 }
