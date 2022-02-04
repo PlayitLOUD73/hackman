@@ -17,6 +17,6 @@ func main() {
 		log.Fatalln("missing API key in env")
 	}
 
-	fmt.Printf("%s\n", GetWord(0))
+	fmt.Printf("%s\n", GetWord(-1))
 
 }
