@@ -15,7 +15,7 @@ type Letter struct {
 }
 
 // WordLetter is a letter and if it has
-// been guessed or not. It is uesd in
+// been guessed or not. It is used in
 // WordInfo.
 type WordLetter struct {
 	abc     byte // letter
