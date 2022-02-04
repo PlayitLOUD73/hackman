@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 type HangmanWord struct {
@@ -16,13 +17,14 @@ func main() {
 
 	var word HangmanWord
 
-	var API_ENDPOINT string
-	var API_KEY string
+	key, ok := os.LookupEnv("HACKMAN_API_KEY")
+	if !ok {
+		log.Fatalln("missing API key in env")
+	}
 
-	API_ENDPOINT = "http://clemsonhackman.com/api/word"
-	API_KEY = "" // placeholder
+	API_ENDPOINT := "http://clemsonhackman.com/api/word"
 
-	resp, err := http.Get(API_ENDPOINT + "?key=" + API_KEY)
+	resp, err := http.Get(API_ENDPOINT + "?key=" + key)
 	if err != nil {
 		log.Fatalln("cannot connect to api: ", err)
 	}
