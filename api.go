@@ -8,31 +8,24 @@ import (
 	"strconv"
 )
 
+// HangmanWord is a struct that contains a
+// word. This is used for easy JSON unmarshaling.
 type HangmanWord struct {
 	Word string
 }
 
-func respToWord(resp *http.Response) string {
+// GetWord returns a word of size length by
+// accessing the Clemson Hackman API.
+// If length is -1, the word size is random.
+// Length can be from 5 to 14 or -1.
+func GetWord(length int) string {
 
 	var word HangmanWord
-
-	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-
-	err := json.Unmarshal(bodyBytes, &word)
-	if err != nil {
-		log.Fatalln("unable to unmarshall json: ", err)
-	}
-
-	return word.Word
-}
-
-func GetWord(length int) string {
 
 	API_ENDPOINT := "https://clemsonhackman.com/api/word"
 
 	url := API_ENDPOINT + "?key=" + key
-	if length != 0 {
+	if length != -1 {
 		url += "&length=" + strconv.Itoa(length)
 	}
 
@@ -41,5 +34,13 @@ func GetWord(length int) string {
 		log.Fatalln("cannot connect to api: ", err)
 	}
 
-	return respToWord(resp)
+	defer resp.Body.Close()
+	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+
+	err = json.Unmarshal(bodyBytes, &word)
+	if err != nil {
+		log.Fatalln("unable to unmarshall json: ", err)
+	}
+
+	return word.Word
 }
