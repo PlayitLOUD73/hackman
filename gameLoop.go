@@ -45,7 +45,7 @@ func gameOver() bool {
 
 	var option int32 = 0
 
-	for option == 0 {
+	for option == 0 && !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.RayWhite)
 		rl.DrawText("Gameover! The answer was "+Ans.word, 100, 200, 30, rl.Red)
@@ -58,6 +58,10 @@ func gameOver() bool {
 			option = c
 		}
 
+	}
+
+	if option == 0 {
+		rl.CloseWindow()
 	}
 
 	return !(option == 78)
