@@ -4,10 +4,13 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+var background rl.Texture2D
+
 // Init initializes a raylib window and sets the appropiate FPS target.
 func Init() {
-	rl.InitWindow(800, 450, "Hackman")
+	rl.InitWindow(800, 600, "Hackman")
 	rl.SetTargetFPS(60)
+	background = rl.LoadTexture("assets/background.png")
 }
 
 // drawLetter draws an individual letter at the given position.
@@ -31,4 +34,10 @@ func drawWord() {
 
 	}
 
+}
+
+func DeInit() {
+
+	rl.UnloadTexture(background)
+	rl.CloseWindow()
 }

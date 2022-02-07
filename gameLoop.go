@@ -15,7 +15,7 @@ func GameLoop() {
 		rl.BeginDrawing()
 
 		rl.ClearBackground(rl.RayWhite)
-
+		rl.DrawTexture(background, 0, 0, rl.RayWhite)
 		rl.DrawText("Welcome to Hackman!", 0, 0, 20, rl.Black)
 		rl.DrawText("The word is "+Ans.word, 0, 50, 20, rl.Black)
 
@@ -32,12 +32,12 @@ func GameLoop() {
 
 		if numGuesses <= 0 {
 			if !gameOver() {
-				rl.CloseWindow()
+				DeInit()
 			}
 		}
 	}
 
-	rl.CloseWindow()
+	DeInit()
 
 }
 
@@ -61,7 +61,7 @@ func gameOver() bool {
 	}
 
 	if option == 0 {
-		rl.CloseWindow()
+		DeInit()
 	}
 
 	return !(option == 78)
