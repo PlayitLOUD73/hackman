@@ -11,7 +11,7 @@ func main() {
 
 	Init()
 	var ok bool
-	// Access environment variable
+	// Access environment variables
 	key, ok = os.LookupEnv("HACKMAN_API_KEY")
 	if !ok {
 		log.Fatalln("missing API key in env")
