@@ -120,7 +120,6 @@ func Setup(length int) {
 		for j := 0; j < len(Ans.word); j++ {
 			if CharToNum(Ans.word[j]) == i {
 				list[i].inWord = true
-				fmt.Printf("%c ", Ans.word[j])
 			}
 		}
 	}
