@@ -35,10 +35,10 @@ type WordInfo struct {
 var list [26]Letter
 var Ans WordInfo // answer
 
-// charToNum is a function to convert a letter
+// CharToNum is a function to convert a letter
 // from the alphabet (in byte form) to its
 // corresponding position in the alphabet.
-func charToNum(c byte) int {
+func CharToNum(c byte) int {
 	switch c {
 
 	case 'a':
@@ -118,9 +118,8 @@ func Setup(length int) {
 	// initializes list of letters
 	for i := 0; i < 26; i++ {
 		for j := 0; j < len(Ans.word); j++ {
-			if charToNum(Ans.word[j]) == i {
+			if CharToNum(Ans.word[j]) == i {
 				list[i].inWord = true
-				fmt.Printf("%c ", Ans.word[j])
 			}
 		}
 	}
@@ -133,13 +132,19 @@ func Setup(length int) {
 // is in the word. The function returns true
 // if the letter is in the word and false if
 // it is not.
-func inWord(c byte) bool {
+func inWord(c int32) bool {
+
+	correct := false
 
 	for i := 0; i < len(Ans.word); i++ {
-		if c == Ans.word[i] {
+		if int(c) == CharToNum(Ans.word[i]) {
 			Ans.list[i].guessed = true
-			return true
+			correct = true
 		}
 	}
-	return false
+	return correct
+}
+
+func uniToInt(c int32) int32 {
+	return c - 65
 }

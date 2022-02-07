@@ -9,9 +9,9 @@ var key string
 
 func main() {
 
-  Init()
-	var ok
-	// Access environment variable
+	Init()
+	var ok bool
+	// Access environment variables
 	key, ok = os.LookupEnv("HACKMAN_API_KEY")
 	if !ok {
 		log.Fatalln("missing API key in env")
@@ -19,6 +19,8 @@ func main() {
 
 	//fmt.Printf("%s\n", GetWord(-1))
 
-	Setup(5)
+	Setup(14)
+
+	GameLoop()
 
 }
