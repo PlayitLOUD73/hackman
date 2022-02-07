@@ -19,7 +19,7 @@ func main() {
 
 	//fmt.Printf("%s\n", GetWord(-1))
 
-	Setup(5)
+	Setup(14)
 
 	GameLoop()
 

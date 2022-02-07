@@ -23,10 +23,12 @@ func drawLetter(c byte, x int32, y int32) {
 func drawWord() {
 	var i int32
 	for i = 0; i < int32(Ans.length); i++ {
+
+		rl.DrawRectangle(200+(25*i), 225, 20, 5, rl.Black)
 		if Ans.list[i].guessed {
 			drawLetter(Ans.list[i].abc, 200+(25*i), 200)
 		}
-		rl.DrawRectangle(200+(25*i), 225, 20, 5, rl.Black)
+
 	}
 
 }
