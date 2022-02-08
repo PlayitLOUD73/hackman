@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -10,39 +9,49 @@ import (
 func GameLoop() {
 	var c int32
 	numGuesses := 5
+	var Ans WordInfo
+	Ans.Setup(-1)
+	var darkGreen rl.Color = rl.Color{0x11, 0x28, 0x21, 0xFF}
 
 	//rl.BeginDrawing()
 	for !rl.WindowShouldClose() {
-		rl.BeginDrawing()
 
-		rl.ClearBackground(rl.RayWhite)
-		rl.DrawTexture(background, 0, 0, rl.RayWhite)
-		rl.DrawText("Welcome to Hackman!", 0, 0, 20, rl.Black)
-		rl.DrawText("The word is "+Ans.word, 0, 50, 20, rl.Black)
-
-		drawWord()
 		c = rl.GetKeyPressed()
 		if c != 0 {
-			if inWord(uniToInt(c)) {
+			if Ans.inWord(uniToInt(c)) {
 			} else {
 				numGuesses--
 			}
 		}
-		rl.DrawText("Lives: "+strconv.Itoa(numGuesses), 400, 400, 20, rl.Black)
-		rl.EndDrawing()
 
 		if numGuesses <= 0 {
-			if !gameOver() {
+			if !gameOver(Ans) {
 				DeInit()
 			}
 		}
+
+		if Ans.fullyGuessed() {
+			Vict(Ans)
+		}
+
+		rl.BeginDrawing()
+
+		rl.ClearBackground(rl.RayWhite)
+		rl.DrawTexture(background, 0, 0, rl.RayWhite)
+		rl.DrawRectangle(100, 100, 600, 400, darkGreen)
+
+		Ans.drawWord()
+
+		rl.DrawText("Lives: "+strconv.Itoa(numGuesses), 400, 400, 20, rl.Black)
+		rl.EndDrawing()
+
 	}
 
 	DeInit()
 
 }
 
-func gameOver() bool {
+func gameOver(Ans WordInfo) bool {
 
 	var option int32 = 0
 
@@ -87,14 +96,8 @@ func mainMenu() {
 		drawButtons(buttons)
 
 		rl.EndDrawing()
-		if rl.IsMouseButtonReleased(rl.MouseLeftButton) {
-			//fmt.Print("MOuse clicked!")
-			clicked := clickedButtons(buttons)
-			fmt.Print(clicked)
-			if clicked != -1 {
-				buttons[clicked].onClick()
-			}
-		}
+
+		mouseClick(rl.MouseLeftButton, buttons)
 		scrollX++
 		if scrollX > int(background.Width)*speed {
 			scrollX = 0
@@ -102,5 +105,25 @@ func mainMenu() {
 
 	}
 	DeInit()
+
+}
+
+func Vict(Ans WordInfo) {
+
+	var buttons []Button
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", DeInit))
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", GameLoop))
+
+	for !rl.WindowShouldClose() {
+
+		mouseClick(rl.MouseLeftButton, buttons)
+
+		rl.BeginDrawing()
+		drawButtons(buttons)
+		rl.DrawText("You guessed the word!", 120, 120, 30, rl.Green)
+		Ans.drawWord()
+		rl.EndDrawing()
+
+	}
 
 }

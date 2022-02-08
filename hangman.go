@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 // Letter is letter information for
@@ -30,10 +32,77 @@ type WordInfo struct {
 	word   string
 	list   []WordLetter
 	length int
+	alpha  [26]Letter
 }
 
-var list [26]Letter
-var Ans WordInfo // answer
+func (w *WordInfo) fullyGuessed() bool {
+	for i := 0; i < len(w.list); i++ {
+		if !w.list[i].guessed {
+			return false
+		}
+	}
+	return true
+}
+
+func (w *WordInfo) Setup(length int) {
+
+	w.word = GetWord(length)
+	w.length = len(w.word)
+
+	// for debugging and testing
+	fmt.Printf("%s\n", w.word)
+
+	// initializes w
+	for i := 0; i < len(w.word); i++ {
+		var temp WordLetter
+		temp.abc = w.word[i]
+		w.list = append(w.list, temp)
+	}
+
+	// initializes list of letters
+	for i := 0; i < 26; i++ {
+		for j := 0; j < len(w.word); j++ {
+			if CharToNum(w.word[j]) == i {
+				w.alpha[i].inWord = true
+			}
+		}
+	}
+
+	fmt.Print("\n")
+
+}
+
+func (w *WordInfo) inWord(c int32) bool {
+
+	correct := false
+
+	for i := 0; i < len(w.word); i++ {
+		if int(c) == CharToNum(w.word[i]) {
+			w.list[i].guessed = true
+			correct = true
+		}
+	}
+	return correct
+}
+
+// drawWord draws the letters guessed and lines underneath letter.
+// No parameters are needed.
+func (w *WordInfo) drawWord() {
+	var i int32
+	for i = 0; i < int32(w.length); i++ {
+
+		rl.DrawRectangle(200+(25*i), 235, 20, 5, rl.Green)
+		if w.list[i].guessed {
+			drawLetter(w.list[i].abc, 200+(25*i), 200)
+		}
+
+	}
+
+}
+
+//var list [26]Letter
+
+//var Ans WordInfo // answer
 
 // CharToNum is a function to convert a letter
 // from the alphabet (in byte form) to its
@@ -102,48 +171,11 @@ func CharToNum(c byte) int {
 // Setup initializes the data necessary
 // for the game to run. It takes in a
 // length to determine the size of the word.
-func Setup(length int) {
-
-	Ans.word = GetWord(length)
-	Ans.length = len(Ans.word)
-	fmt.Printf("%s\n", Ans.word)
-
-	// initializes Ans
-	for i := 0; i < len(Ans.word); i++ {
-		var temp WordLetter
-		temp.abc = Ans.word[i]
-		Ans.list = append(Ans.list, temp)
-	}
-
-	// initializes list of letters
-	for i := 0; i < 26; i++ {
-		for j := 0; j < len(Ans.word); j++ {
-			if CharToNum(Ans.word[j]) == i {
-				list[i].inWord = true
-			}
-		}
-	}
-
-	fmt.Print("\n")
-
-}
 
 // inWord determines if a particular letter
 // is in the word. The function returns true
 // if the letter is in the word and false if
 // it is not.
-func inWord(c int32) bool {
-
-	correct := false
-
-	for i := 0; i < len(Ans.word); i++ {
-		if int(c) == CharToNum(Ans.word[i]) {
-			Ans.list[i].guessed = true
-			correct = true
-		}
-	}
-	return correct
-}
 
 func uniToInt(c int32) int32 {
 	return c - 65

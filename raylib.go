@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -21,23 +23,17 @@ func Init() {
 func drawLetter(c byte, x int32, y int32) {
 
 	var fontsize int32 = 30
-	rl.DrawText(string(c), x, y, fontsize, rl.Blue)
+	rl.DrawText(string(c), x, y, fontsize, rl.Green)
 
 }
 
-// drawWord draws the letters guessed and lines underneath letter.
-// No parameters are needed.
-func drawWord() {
-	var i int32
-	for i = 0; i < int32(Ans.length); i++ {
-
-		rl.DrawRectangle(200+(25*i), 225, 20, 5, rl.Black)
-		if Ans.list[i].guessed {
-			drawLetter(Ans.list[i].abc, 200+(25*i), 200)
+func mouseClick(mouse int32, b []Button) {
+	if rl.IsMouseButtonReleased(mouse) {
+		clicked := clickedButtons(b)
+		if clicked != -1 {
+			b[clicked].onClick()
 		}
-
 	}
-
 }
 
 func DeInit() {
@@ -46,4 +42,5 @@ func DeInit() {
 	rl.UnloadTexture(title)
 	rl.UnloadTexture(button1)
 	rl.CloseWindow()
+	os.Exit(0)
 }
