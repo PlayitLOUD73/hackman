@@ -21,11 +21,8 @@ func Init() {
 	rl.InitWindow(800, 600, "Hackman")
 	rl.SetTargetFPS(60)
 
-	//var Background []byte = assets[0].Name()
-
 	assets, _ := fs.ReadDir(files, "assets")
-	//var Background []byte
-	//var name string = assets[0].Name()
+
 	backgroundRaw, _ := fs.ReadFile(files, "assets/"+assets[0].Name())
 	var backgroundImg *rl.Image = rl.LoadImageFromMemory(".png", backgroundRaw, int32(len(backgroundRaw)))
 	background = rl.LoadTextureFromImage(backgroundImg)
