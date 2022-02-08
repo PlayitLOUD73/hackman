@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -65,5 +66,34 @@ func gameOver() bool {
 	}
 
 	return !(option == 78)
+
+}
+
+func mainMenu() {
+
+	var buttons []Button
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()-200)/2, (rl.GetScreenHeight()+50)/2, rl.SkyBlue, "Start", GameLoop))
+
+	for !rl.WindowShouldClose() {
+		rl.BeginDrawing()
+		rl.ClearBackground(rl.RayWhite)
+		rl.DrawTexture(background, 0, 0, rl.RayWhite)
+
+		rl.DrawTexture(title, int32((rl.GetScreenWidth()-650)/2), int32((rl.GetScreenHeight()-400)/2), rl.RayWhite)
+
+		drawButtons(buttons)
+
+		rl.EndDrawing()
+		if rl.IsMouseButtonReleased(rl.MouseLeftButton) {
+			//fmt.Print("MOuse clicked!")
+			clicked := clickedButtons(buttons)
+			fmt.Print(clicked)
+			if clicked != -1 {
+				buttons[clicked].onClick()
+			}
+		}
+
+	}
+	DeInit()
 
 }

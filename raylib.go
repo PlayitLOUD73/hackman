@@ -5,12 +5,16 @@ import (
 )
 
 var background rl.Texture2D
+var title rl.Texture2D
+var button1 rl.Texture2D
 
 // Init initializes a raylib window and sets the appropiate FPS target.
 func Init() {
 	rl.InitWindow(800, 600, "Hackman")
 	rl.SetTargetFPS(60)
 	background = rl.LoadTexture("assets/background.png")
+	title = rl.LoadTexture("assets/title.png")
+	button1 = rl.LoadTexture("assets/button1.png")
 }
 
 // drawLetter draws an individual letter at the given position.
@@ -39,5 +43,7 @@ func drawWord() {
 func DeInit() {
 
 	rl.UnloadTexture(background)
+	rl.UnloadTexture(title)
+	rl.UnloadTexture(button1)
 	rl.CloseWindow()
 }
