@@ -25,9 +25,7 @@ func GameLoop() {
 		}
 
 		if numGuesses <= 0 {
-			if !gameOver(Ans) {
-				DeInit()
-			}
+			gameOver(Ans)
 		}
 
 		if Ans.fullyGuessed() {
@@ -51,30 +49,25 @@ func GameLoop() {
 
 }
 
-func gameOver(Ans WordInfo) bool {
+func gameOver(Ans WordInfo) {
 
 	var option int32 = 0
 
+	var buttons []Button
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", DeInit))
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", GameLoop))
+
 	for option == 0 && !rl.WindowShouldClose() {
+
+		mouseClick(rl.MouseLeftButton, buttons)
+
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.RayWhite)
-		rl.DrawText("Gameover! The answer was "+Ans.word, 100, 200, 30, rl.Red)
-		rl.DrawText("Play again? y/n", 200, 300, 30, rl.Blue)
+		//rl.ClearBackground(rl.RayWhite)
+		rl.DrawText("Gameover! The answer was "+Ans.word, 120, 120, 25, rl.Red)
+		drawButtons(buttons)
 		rl.EndDrawing()
-		c := rl.GetKeyPressed()
-		//c = uniToInt(c)
-		// is c y or n?
-		if c == 89 || c == 78 {
-			option = c
-		}
 
 	}
-
-	if option == 0 {
-		DeInit()
-	}
-
-	return !(option == 78)
 
 }
 
