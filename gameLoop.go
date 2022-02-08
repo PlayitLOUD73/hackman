@@ -73,11 +73,14 @@ func mainMenu() {
 
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()-200)/2, (rl.GetScreenHeight()+50)/2, rl.SkyBlue, "Start", GameLoop))
-
+	scrollX := 0
+	speed := 2
+	//rl.SetTextureWrap(title, rl.WrapRepeat)
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.RayWhite)
-		rl.DrawTexture(background, 0, 0, rl.RayWhite)
+		//rl.ClearBackground(rl.RayWhite)
+		rl.DrawTexture(background, int32(scrollX/speed), 0, rl.RayWhite)
+		rl.DrawTexture(background, int32((scrollX/speed - 800)), 0, rl.RayWhite)
 
 		rl.DrawTexture(title, int32((rl.GetScreenWidth()-650)/2), int32((rl.GetScreenHeight()-400)/2), rl.RayWhite)
 
@@ -91,6 +94,10 @@ func mainMenu() {
 			if clicked != -1 {
 				buttons[clicked].onClick()
 			}
+		}
+		scrollX++
+		if scrollX > int(background.Width)*speed {
+			scrollX = 0
 		}
 
 	}
