@@ -1,23 +1,21 @@
 package main
 
 import (
-	"log"
-	"os"
+	_ "embed"
+	"strings"
 )
+
+//go:embed secrets.txt
+var rawKey string
 
 var key string
 
 func main() {
 
-	Init()
-	var ok bool
-	// Access environment variables
-	key, ok = os.LookupEnv("HACKMAN_API_KEY")
-	if !ok {
-		log.Fatalln("missing API key in env")
-	}
+	keyInfo := strings.Split(rawKey, "=")
+	key = keyInfo[1]
 
-	//fmt.Printf("%s\n", GetWord(-1))
+	Init()
 	mainMenu()
 
 }

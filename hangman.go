@@ -93,7 +93,7 @@ func (w *WordInfo) drawWord() {
 
 		rl.DrawRectangle(300+(25*i), 300, 20, 5, rl.Green)
 		if w.list[i].guessed {
-			drawLetter(w.list[i].abc, 200+(25*i), 200)
+			drawLetter(w.list[i].abc, 300+(25*i), 265)
 		}
 
 	}
