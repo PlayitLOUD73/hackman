@@ -1,4 +1,4 @@
-module hackman.com/m/v2
+module github.com/PlayitLOUD73/hackman
 
 go 1.17
 

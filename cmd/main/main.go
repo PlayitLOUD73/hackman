@@ -3,6 +3,8 @@ package main
 import (
 	_ "embed"
 	"strings"
+
+	game "github.com/PlayitLOUD73/hackman"
 )
 
 //go:embed secrets.txt
@@ -15,7 +17,7 @@ func main() {
 	keyInfo := strings.Split(rawKey, "=")
 	key = keyInfo[1]
 
-	Init()
-	mainMenu()
+	game.Init()
+	game.MainMenu()
 
 }

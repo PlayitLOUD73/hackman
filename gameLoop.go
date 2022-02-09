@@ -1,4 +1,4 @@
-package main
+package hackman
 
 import (
 	"strconv"
@@ -6,11 +6,11 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func GameLoop() {
+func GameLoop(key string) {
 	var c int32
 	numGuesses := 6
 	var Ans WordInfo
-	Ans.Setup(-1)
+	Ans.Setup(-1, key)
 	var darkGreen rl.Color = rl.Color{0x11, 0x28, 0x21, 0xFF}
 
 	//rl.BeginDrawing()
@@ -29,7 +29,7 @@ func GameLoop() {
 		}
 
 		if Ans.fullyGuessed() {
-			Vict(Ans)
+			vict(Ans)
 		}
 
 		rl.BeginDrawing()
@@ -55,7 +55,7 @@ func gameOver(Ans WordInfo) {
 
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", DeInit))
-	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", GameLoop))
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", gameLoop))
 
 	for option == 0 && !rl.WindowShouldClose() {
 
@@ -74,7 +74,7 @@ func gameOver(Ans WordInfo) {
 func mainMenu() {
 
 	var buttons []Button
-	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()-200)/2, (rl.GetScreenHeight()+50)/2, rl.SkyBlue, "Start", GameLoop))
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()-200)/2, (rl.GetScreenHeight()+50)/2, rl.SkyBlue, "Start", gameLoop))
 	scrollX := 0
 	speed := 2
 	//rl.SetTextureWrap(title, rl.WrapRepeat)
@@ -101,11 +101,11 @@ func mainMenu() {
 
 }
 
-func Vict(Ans WordInfo) {
+func vict(Ans WordInfo) {
 
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", DeInit))
-	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", GameLoop))
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", gameLoop))
 
 	for !rl.WindowShouldClose() {
 

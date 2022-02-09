@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"encoding/json"
@@ -18,7 +18,7 @@ type HangmanWord struct {
 // accessing the Clemson Hackman API.
 // If length is -1, the word size is random.
 // Length can be from 5 to 14 or -1.
-func GetWord(length int) string {
+func GetWord(length int, key string) string {
 
 	var word HangmanWord
 
