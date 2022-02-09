@@ -91,7 +91,7 @@ func (w *WordInfo) drawWord() {
 	var i int32
 	for i = 0; i < int32(w.length); i++ {
 
-		rl.DrawRectangle(200+(25*i), 235, 20, 5, rl.Green)
+		rl.DrawRectangle(300+(25*i), 300, 20, 5, rl.Green)
 		if w.list[i].guessed {
 			drawLetter(w.list[i].abc, 200+(25*i), 200)
 		}
