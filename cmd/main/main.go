@@ -18,6 +18,7 @@ func main() {
 	key = keyInfo[1]
 
 	game.Init()
-	game.MainMenu()
+	game.GameLoop(key)
+	game.DeInit()
 
 }
