@@ -1,11 +1,19 @@
 # hackman
 A hangman game written in Go and Raylib.
 
-### Setting up Environment Variables
-The application needs an API key to run.
-To setup the application run<br />```export HACKMAN_API_KEY=YOUR_KEY```<br />
-This will work as long as the shell is active.
+## Running
+Download and extract the zip file for your operating system and architecture.
+Double click to run.
 
+## Development/ Compiling from Source
+For local development and testing, a [Clemson Hackman API key](https://github.com/Jay-Madden/hackmanapi) is needed.
+### Download necessary tools
+1. Download and install [Go 1.17.6](https://go.dev/)
+2. Download and install [raylib-go](https://github.com/gen2brain/raylib-go)
+    a. ```go get -v -u github.com/gen2brain/raylib-go/raylib```
+### Setting up Environment Variables
+1. Create a file named ```secrets.txt``` in the root directory of the project.
+2. Enter ```HACKMAN_API_KEY=key``` and replace key with your Clemson Hackman API key.
 ### Cross Compiling for Windows
 1. Install mingw-w64
-2. Build by running <br />```GOOS=windows CGO_ENABLED=1 CC=/usr/local/bin/x86_64-w64-mingw32-gcc go build -o hackman.exe```<br />
+2. run ```make build_windows``` in the root directory of the project.
