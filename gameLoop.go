@@ -40,7 +40,7 @@ func GameLoop() {
 
 		Ans.drawWord()
 
-		rl.DrawText("Lives: "+strconv.Itoa(numGuesses), 400, 400, 20, rl.Black)
+		rl.DrawText("Lives: "+strconv.Itoa(numGuesses), 575, 100, 30, rl.Green)
 		rl.EndDrawing()
 
 	}
