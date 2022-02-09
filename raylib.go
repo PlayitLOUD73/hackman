@@ -17,6 +17,7 @@ var button1 rl.Texture2D
 var files embed.FS
 
 // Init initializes a raylib window and sets the appropiate FPS target.
+// It also initializes textures
 func Init() {
 	rl.InitWindow(800, 600, "Hackman")
 	rl.SetTargetFPS(60)

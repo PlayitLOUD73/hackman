@@ -8,7 +8,7 @@ import (
 
 func GameLoop() {
 	var c int32
-	numGuesses := 5
+	numGuesses := 6
 	var Ans WordInfo
 	Ans.Setup(-1)
 	var darkGreen rl.Color = rl.Color{0x11, 0x28, 0x21, 0xFF}
