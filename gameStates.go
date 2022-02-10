@@ -6,22 +6,44 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func game(Ans WordInfo, c int32, guesses int) (WordInfo, int, GameState) {
-	state := GAME
+const (
+	MAINMENU GameState = iota // MAINMENU = 0
+	GAME                      // GAME = 1
+	GAMEOVER                  // GAMEOVER = 2
+	VICTORY                   // VICTORY = 3
+	NEWGAME                   // NEWGAME = 4
+	EXIT                      // EXIT = 5
+)
+
+type GameController struct {
+	state   GameState
+	ans     WordInfo
+	guesses int
+	scroll  int
+}
+
+func NewGameController(key string) *GameController {
+	g := new(GameController)
+	g.newGame(key)
+	return g
+}
+
+func (g *GameController) game(c int32) {
+
 	var darkGreen rl.Color = rl.Color{0x11, 0x28, 0x21, 0xFF}
 	if c != 0 {
-		if Ans.inWord(uniToInt(c)) {
+		if g.ans.inWord(uniToInt(c)) {
 		} else {
-			guesses--
+			g.guesses--
 		}
 	}
 
-	if guesses <= 0 {
-		state = GAMEOVER
+	if g.guesses <= 0 {
+		g.state = GAMEOVER
 	}
 
-	if Ans.fullyGuessed() {
-		state = VICTORY
+	if g.ans.fullyGuessed() {
+		g.state = VICTORY
 	}
 
 	rl.BeginDrawing()
@@ -30,45 +52,39 @@ func game(Ans WordInfo, c int32, guesses int) (WordInfo, int, GameState) {
 	rl.DrawTexture(background, 0, 0, rl.RayWhite)
 	rl.DrawRectangle(100, 100, 600, 400, darkGreen)
 
-	Ans.drawWord()
+	g.ans.drawWord()
 
-	rl.DrawText("Lives: "+strconv.Itoa(guesses), 575, 100, 30, rl.Green)
+	rl.DrawText("Lives: "+strconv.Itoa(g.guesses), 575, 100, 30, rl.Green)
 	rl.EndDrawing()
-
-	return Ans, guesses, state
 }
 
-func gameOver(Ans WordInfo) GameState {
+func (g *GameController) gameOver() {
 
-	g := GAMEOVER
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
 
-	g = mouseClick(rl.MouseLeftButton, buttons, g)
+	g.state = mouseClick(rl.MouseLeftButton, buttons, g.state)
 
 	rl.BeginDrawing()
 
 	rl.DrawTexture(background, 0, 0, rl.DarkBrown)
-	rl.DrawText("Gameover! The answer was "+Ans.word, 120, 120, 25, rl.Red)
+	rl.DrawText("Gameover! The answer was "+g.ans.word, 120, 120, 25, rl.Red)
 	drawButtons(buttons)
 	rl.EndDrawing()
-	return g
 
 }
 
-func mainMenu() GameState {
+func (g *GameController) mainMenu() {
 
-	g := MAINMENU
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()-200)/2, (rl.GetScreenHeight()+50)/2, rl.SkyBlue, "Start", NEWGAME))
-	scrollX := 0
 	speed := 2
 	//rl.SetTextureWrap(title, rl.WrapRepeat)
 	rl.BeginDrawing()
 	//rl.ClearBackground(rl.RayWhite)
-	rl.DrawTexture(background, int32(scrollX/speed), 0, rl.RayWhite)
-	rl.DrawTexture(background, int32((scrollX/speed - 800)), 0, rl.RayWhite)
+	rl.DrawTexture(background, int32(g.scroll/speed), 0, rl.RayWhite)
+	rl.DrawTexture(background, int32((g.scroll/speed - 800)), 0, rl.RayWhite)
 
 	rl.DrawTexture(title, int32((rl.GetScreenWidth()-650)/2), int32((rl.GetScreenHeight()-400)/2), rl.RayWhite)
 
@@ -76,35 +92,33 @@ func mainMenu() GameState {
 
 	rl.EndDrawing()
 
-	g = mouseClick(rl.MouseLeftButton, buttons, g)
-	scrollX++
-	if scrollX > int(background.Width)*speed {
-		scrollX = 0
+	g.state = mouseClick(rl.MouseLeftButton, buttons, g.state)
+	g.scroll++
+	if g.scroll > int(background.Width)*speed {
+		g.scroll = 0
 	}
-	return g
-
 }
 
-func vict(Ans WordInfo) GameState {
+func (g *GameController) vict() {
 
-	g := VICTORY
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
 
-	g = mouseClick(rl.MouseLeftButton, buttons, g)
+	g.state = mouseClick(rl.MouseLeftButton, buttons, g.state)
 
 	rl.BeginDrawing()
+	rl.DrawTexture(background, 0, 0, rl.RayWhite)
 	drawButtons(buttons)
 	rl.DrawText("You guessed the word!", 120, 120, 30, rl.Green)
-	Ans.drawWord()
+	g.ans.drawWord()
 	rl.EndDrawing()
-
-	return g
 }
 
-func newGame(key string) (WordInfo, int) {
+func (g *GameController) newGame(key string) {
 	var Ans WordInfo
 	Ans.Setup(-1, key)
-	return Ans, 6
+	g.guesses = 6
+	g.ans = Ans
+	g.state = GAME
 }

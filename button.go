@@ -18,17 +18,15 @@ type HitboxLetter struct {
 }
 
 type Button struct {
-	texture   rl.Texture2D
-	isKey     bool
-	key       byte
-	newState  GameState
-	x         int
-	y         int
-	dim       Hitbox
-	newScreen func(GameState) GameState
-	enterKey  func(byte)
-	tint      rl.Color
-	text      string
+	texture  rl.Texture2D
+	isKey    bool
+	key      byte
+	newState GameState
+	x        int
+	y        int
+	dim      Hitbox
+	tint     rl.Color
+	text     string
 }
 
 func NewButton(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, g GameState) *Button {

@@ -6,40 +6,32 @@ import (
 
 type GameState int
 
-const (
-	MAINMENU GameState = iota // MAINMENU = 0
-	GAME                      // GAME = 1
-	GAMEOVER                  // GAMEOVER = 2
-	VICTORY                   // VICTORY = 3
-	NEWGAME                   // NEWGAME = 4
-	EXIT                      // EXIT = 5
-)
-
 func GameLoop(key string) {
 
-	var c int32
-	var state GameState = MAINMENU
+	var controller GameController = *NewGameController(key)
 
-	Ans, numGuesses := newGame(key)
+	var c int32
+	controller.state = MAINMENU
+
+	//controller.newGame(key)
 
 	//rl.BeginDrawing()
 	for !rl.WindowShouldClose() {
 		rl.ClearBackground(rl.RayWhite)
 		// Which part of the game am I in?
-		switch state {
+		switch controller.state {
 
-		case 0:
-			state = mainMenu()
-		case 1:
-			Ans, numGuesses, state = game(Ans, c, numGuesses)
-		case 2:
-			state = gameOver(Ans)
-		case 3:
-			state = vict(Ans)
-		case 4:
-			Ans, numGuesses = newGame(key)
-			state = GAME
-		case 5:
+		case MAINMENU:
+			controller.mainMenu()
+		case GAME:
+			controller.game(c)
+		case GAMEOVER:
+			controller.gameOver()
+		case VICTORY:
+			controller.vict()
+		case NEWGAME:
+			controller.newGame(key)
+		case EXIT:
 			return
 		}
 
