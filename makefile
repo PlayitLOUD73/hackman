@@ -6,26 +6,26 @@ EXECUTABLE=hackman
 build:
 	go build -o ${EXECUTABLE}
 
-setup:
+setup: clean
 	mkdir releases
 	
 build_windows: setup
-	GOOS=windows CGO_ENABLED=1 CC=${CROSS_COMPILER} go build -o releases/${WINDOWS_EXECUTABLE}
+	GOOS=windows CGO_ENABLED=1 CC=${CROSS_COMPILER} go build -o releases/${WINDOWS_EXECUTABLE} ./cmd/main
 	zip releases/hackman_windows.zip releases/${WINDOWS_EXECUTABLE}
 	rm releases/${WINDOWS_EXECUTABLE}
 
 build_darwin_intel:	setup
-	GOOS=darwin CGO_ENABLED=1 go build -o releases/${EXECUTABLE}
+	GOOS=darwin CGO_ENABLED=1 go build -o releases/${EXECUTABLE} ./cmd/main
 	zip releases/hackman_macos_intel.zip releases/${EXECUTABLE}
 	rm releases/${EXECUTABLE}
 
 build_darwin_arm: setup
-	GOOS=darwin CGO_ENABLED=1 GOARCH=arm64 go build -o releases/${EXECUTABLE}
+	GOOS=darwin CGO_ENABLED=1 GOARCH=arm64 go build -o releases/${EXECUTABLE} ./cmd/main
 	zip releases/hackman_macos_arm.zip releases/${EXECUTABLE}
 	rm releases/${EXECUTABLE}
 
 build_linux: setup
-	GOOS=linux CGO_ENABLED=1 CC=${LINUX_CC} GOARCH=amd64 go build -o releases/${EXECUTABLE}
+	GOOS=linux CGO_ENABLED=1 CC=${LINUX_CC} GOARCH=amd64 go build -o releases/${EXECUTABLE} ./cmd/main
 	zip releases/hackman_linux.zip releases/${EXECUTABLE}
 	rm releases/${EXECUTABLE}
 
