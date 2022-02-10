@@ -4,8 +4,6 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-type GameState int
-
 func GameLoop(key string) {
 
 	var controller GameController = *NewGameController(key)

@@ -6,6 +6,8 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+type GameState int
+
 const (
 	MAINMENU GameState = iota // MAINMENU = 0
 	GAME                      // GAME = 1
