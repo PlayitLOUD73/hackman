@@ -1,8 +1,10 @@
-package main
+package hackman
 
 import (
 	"fmt"
 	"log"
+
+	"github.com/PlayitLOUD73/hackman/api"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -44,9 +46,9 @@ func (w *WordInfo) fullyGuessed() bool {
 	return true
 }
 
-func (w *WordInfo) Setup(length int) {
+func (w *WordInfo) Setup(length int, key string) {
 
-	w.word = GetWord(length)
+	w.word = api.GetWord(length, key)
 	w.length = len(w.word)
 
 	// for debugging and testing

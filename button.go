@@ -1,4 +1,4 @@
-package main
+package hackman
 
 import (
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -18,18 +18,21 @@ type HitboxLetter struct {
 }
 
 type Button struct {
-	texture rl.Texture2D
-	x       int
-	y       int
-	dim     Hitbox
-	onClick func()
-	tint    rl.Color
-	text    string
+	texture  rl.Texture2D
+	isKey    bool
+	key      byte
+	newState GameState
+	x        int
+	y        int
+	dim      Hitbox
+	tint     rl.Color
+	text     string
 }
 
-func NewButton(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, f func()) *Button {
+func NewButton(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, g GameState) *Button {
 
 	b := new(Button)
+	b.isKey = false
 	b.texture = t
 	b.x = xPos
 	b.y = yPos
@@ -39,7 +42,25 @@ func NewButton(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, f func(
 	b.dim.xMin = xPos
 	b.dim.yMax = yPos + int(t.Height)
 	b.dim.yMin = yPos
-	b.onClick = f
+	b.newState = g
+
+	return b
+}
+
+func NewKey(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, k byte) *Button {
+
+	b := new(Button)
+	b.isKey = true
+	b.texture = t
+	b.x = xPos
+	b.y = yPos
+	b.tint = c
+	b.text = s
+	b.dim.xMax = xPos + int(t.Width)
+	b.dim.xMin = xPos
+	b.dim.yMax = yPos + int(t.Height)
+	b.dim.yMin = yPos
+	b.key = k
 
 	return b
 }
@@ -51,6 +72,8 @@ func (b *Button) drawButtonText() {
 	y := b.dim.yMax - ((font + (b.dim.yMax - b.y)) / 2)
 	rl.DrawText(b.text, int32(x), int32(y), int32(font), rl.Black)
 }
+
+func (b *Button) changeState() GameState { return b.newState }
 
 /*
 func clickedLetters() byte {

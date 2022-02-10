@@ -1,4 +1,4 @@
-package main
+package hackman
 
 import (
 	"embed"
@@ -46,13 +46,18 @@ func drawLetter(c byte, x int32, y int32) {
 
 }
 
-func mouseClick(mouse int32, b []Button) {
+func mouseClick(mouse int32, b []Button, g GameState) GameState {
 	if rl.IsMouseButtonReleased(mouse) {
 		clicked := clickedButtons(b)
 		if clicked != -1 {
-			b[clicked].onClick()
+			if b[clicked].isKey {
+				//b[clicked].enterKey()
+			} else {
+				return b[clicked].changeState()
+			}
 		}
 	}
+	return g
 }
 
 func DeInit() {
