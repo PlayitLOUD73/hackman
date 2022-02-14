@@ -12,8 +12,12 @@ For local development and testing, a [Clemson Hackman API key](https://github.co
 2. Download and install [raylib-go](https://github.com/gen2brain/raylib-go)
     1. ```go get -v -u github.com/gen2brain/raylib-go/raylib```
 ### Setting up Environment Variables
-1. Create a file named ```secrets.txt``` in the root directory of the project.
-2. Enter ```HACKMAN_API_KEY=key``` and replace key with your Clemson Hackman API key.
-### Cross Compiling for Windows
-1. Install mingw-w64
-2. run ```make build_windows``` in the root directory of the project.
+1. Create a file named ```secrets.txt``` in ```PROJECTROOT/cmd/main```.
+2. Enter ```HACKMAN_API_KEY=key``` at the top of the file and replace key with your Clemson Hackman API key.
+### Compiling on Windows
+#### WIP, can only build locally right now
+1. Download and install [MSYS2](https://www.msys2.org/)
+2. Follow post installation instructions.
+3. Open MSYS2 and run ```pacman -S mingw-w64-x86_64-go```
+4. Run ```make build``` in the root directory of the project.
+5. Run the program with ```go run ./cmd/main```
