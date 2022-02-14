@@ -18,24 +18,31 @@ const (
 )
 
 type GameController struct {
-	state   GameState
-	ans     WordInfo
-	guesses int
-	scroll  int
+	state    GameState
+	ans      WordInfo
+	guesses  int
+	scroll   int
+	keyboard Keyboard
 }
 
-func NewGameController(key string) *GameController {
+func NewGameController(apiKey string) *GameController {
 	g := new(GameController)
-	g.newGame(key)
+	g.newGame(apiKey)
+	g.keyboard = *NewKeyboard()
 	return g
 }
 
 func (g *GameController) game(c int32) {
 
+	buttons := g.keyboard.keys[:]
+
 	var darkGreen rl.Color = rl.Color{0x11, 0x28, 0x21, 0xFF}
 	if c != 0 {
-		if g.ans.inWord(uniToInt(c)) {
+		buttonMarker := keyConversion(int(uniToInt(c)))
+		if g.ans.inWord(uniToInt(c), buttons[buttonMarker]) {
+			buttons[buttonMarker].tint = rl.Green
 		} else {
+			buttons[buttonMarker].tint = rl.Red
 			g.guesses--
 		}
 	}
@@ -48,11 +55,14 @@ func (g *GameController) game(c int32) {
 		g.state = VICTORY
 	}
 
+	g, buttons = mouseClick(rl.MouseLeftButton, buttons, g)
+
 	rl.BeginDrawing()
 
 	rl.ClearBackground(rl.RayWhite)
 	rl.DrawTexture(background, 0, 0, rl.RayWhite)
-	rl.DrawRectangle(100, 100, 600, 400, darkGreen)
+	rl.DrawRectangle(75, 100, 650, 450, darkGreen)
+	drawButtons(buttons)
 
 	g.ans.drawWord()
 
@@ -66,7 +76,7 @@ func (g *GameController) gameOver() {
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
 
-	g.state = mouseClick(rl.MouseLeftButton, buttons, g.state)
+	g, buttons = mouseClick(rl.MouseLeftButton, buttons, g)
 
 	rl.BeginDrawing()
 
@@ -83,6 +93,7 @@ func (g *GameController) mainMenu() {
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()-200)/2, (rl.GetScreenHeight()+50)/2, rl.SkyBlue, "Start", NEWGAME))
 	speed := 2
 	//rl.SetTextureWrap(title, rl.WrapRepeat)
+	g, buttons = mouseClick(rl.MouseLeftButton, buttons, g)
 	rl.BeginDrawing()
 	//rl.ClearBackground(rl.RayWhite)
 	rl.DrawTexture(background, int32(g.scroll/speed), 0, rl.RayWhite)
@@ -93,8 +104,6 @@ func (g *GameController) mainMenu() {
 	drawButtons(buttons)
 
 	rl.EndDrawing()
-
-	g.state = mouseClick(rl.MouseLeftButton, buttons, g.state)
 	g.scroll++
 	if g.scroll > int(background.Width)*speed {
 		g.scroll = 0
@@ -107,7 +116,7 @@ func (g *GameController) vict() {
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
 
-	g.state = mouseClick(rl.MouseLeftButton, buttons, g.state)
+	g, buttons = mouseClick(rl.MouseLeftButton, buttons, g)
 
 	rl.BeginDrawing()
 	rl.DrawTexture(background, 0, 0, rl.RayWhite)
@@ -120,7 +129,10 @@ func (g *GameController) vict() {
 func (g *GameController) newGame(key string) {
 	var Ans WordInfo
 	Ans.Setup(-1, key)
+	k := NewKeyboard()
 	g.guesses = 6
 	g.ans = Ans
 	g.state = GAME
+	g.keyboard = *k
+
 }

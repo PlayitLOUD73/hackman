@@ -74,14 +74,17 @@ func (w *WordInfo) Setup(length int, key string) {
 
 }
 
-func (w *WordInfo) inWord(c int32) bool {
+func (w *WordInfo) inWord(c int32, key Button) bool {
 
 	correct := false
-
+	key.tint = rl.Red
+	fmt.Println(key)
 	for i := 0; i < len(w.word); i++ {
 		if int(c) == CharToNum(w.word[i]) {
 			w.list[i].guessed = true
 			correct = true
+			key.tint = rl.Green
+
 		}
 	}
 	return correct
