@@ -12,6 +12,7 @@ import (
 var background rl.Texture2D
 var title rl.Texture2D
 var button1 rl.Texture2D
+var button2 rl.Texture2D
 
 //go:embed "assets/*.png"
 var files embed.FS
@@ -32,7 +33,11 @@ func Init() {
 	var button1Img *rl.Image = rl.LoadImageFromMemory(".png", button1Raw, int32(len(button1Raw)))
 	button1 = rl.LoadTextureFromImage(button1Img)
 
-	titleRaw, _ := fs.ReadFile(files, "assets/"+assets[2].Name())
+	button2Raw, _ := fs.ReadFile(files, "assets/"+assets[2].Name())
+	var button2Img *rl.Image = rl.LoadImageFromMemory(".png", button2Raw, int32(len(button2Raw)))
+	button2 = rl.LoadTextureFromImage(button2Img)
+
+	titleRaw, _ := fs.ReadFile(files, "assets/"+assets[3].Name())
 	var titleImg *rl.Image = rl.LoadImageFromMemory(".png", titleRaw, int32(len(titleRaw)))
 	title = rl.LoadTextureFromImage(titleImg)
 
@@ -46,18 +51,24 @@ func drawLetter(c byte, x int32, y int32) {
 
 }
 
-func mouseClick(mouse int32, b []Button, g GameState) GameState {
+func mouseClick(mouse int32, b []Button, g *GameController) (*GameController, []Button) {
 	if rl.IsMouseButtonReleased(mouse) {
 		clicked := clickedButtons(b)
 		if clicked != -1 {
 			if b[clicked].isKey {
-				//b[clicked].enterKey()
+				if g.ans.inWord(int32(CharToNum(b[clicked].key)), b[clicked]) {
+					b[clicked].tint = rl.Green
+				} else {
+					b[clicked].tint = rl.Red
+					g.guesses--
+				}
+				//fmt.Println()
 			} else {
-				return b[clicked].changeState()
+				g.state = b[clicked].changeState()
 			}
 		}
 	}
-	return g
+	return g, b
 }
 
 func DeInit() {
