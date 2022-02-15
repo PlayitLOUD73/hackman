@@ -59,6 +59,7 @@ func (w *WordInfo) Setup(length int, key string) {
 		var temp WordLetter
 		temp.abc = w.word[i]
 		w.list = append(w.list, temp)
+		w.list[i].guessed = false
 	}
 
 	// initializes list of letters
@@ -69,7 +70,6 @@ func (w *WordInfo) Setup(length int, key string) {
 			}
 		}
 	}
-
 	fmt.Print("\n")
 
 }

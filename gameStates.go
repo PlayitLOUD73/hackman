@@ -1,6 +1,7 @@
 package hackman
 
 import (
+	"fmt"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -25,18 +26,19 @@ type GameController struct {
 	keyboard Keyboard
 }
 
-func NewGameController(apiKey string) *GameController {
+func NewGameController() *GameController {
+	//fmt.Print("NEWGAME")
 	g := new(GameController)
-	g.newGame(apiKey)
-	g.keyboard = *NewKeyboard()
 	return g
 }
 
-func (g *GameController) game(c int32) {
-
+func (g *GameController) game() {
+	fmt.Print("GAME")
 	buttons := g.keyboard.keys[:]
 
 	var darkGreen rl.Color = rl.Color{0x11, 0x28, 0x21, 0xFF}
+	c := rl.GetKeyPressed()
+	fmt.Print(c)
 	if c != 0 {
 		buttonMarker := keyConversion(int(uniToInt(c)))
 		if g.ans.inWord(uniToInt(c), buttons[buttonMarker]) {
@@ -52,6 +54,7 @@ func (g *GameController) game(c int32) {
 	}
 
 	if g.ans.fullyGuessed() {
+		fmt.Print(g.ans.fullyGuessed())
 		g.state = VICTORY
 	}
 
@@ -71,7 +74,7 @@ func (g *GameController) game(c int32) {
 }
 
 func (g *GameController) gameOver() {
-
+	//fmt.Print("GAMEOVER\n")
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
@@ -88,7 +91,7 @@ func (g *GameController) gameOver() {
 }
 
 func (g *GameController) mainMenu() {
-
+	fmt.Print("MAIN\n")
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()-200)/2, (rl.GetScreenHeight()+50)/2, rl.SkyBlue, "Start", NEWGAME))
 	speed := 2
@@ -111,7 +114,7 @@ func (g *GameController) mainMenu() {
 }
 
 func (g *GameController) vict() {
-
+	fmt.Print("VICT\n")
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))

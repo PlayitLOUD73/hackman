@@ -6,9 +6,7 @@ import (
 
 func GameLoop(key string) {
 
-	var controller GameController = *NewGameController(key)
-
-	var c int32
+	var controller GameController = *NewGameController()
 	controller.state = MAINMENU
 
 	//controller.newGame(key)
@@ -22,7 +20,7 @@ func GameLoop(key string) {
 		case MAINMENU:
 			controller.mainMenu()
 		case GAME:
-			controller.game(c)
+			controller.game()
 		case GAMEOVER:
 			controller.gameOver()
 		case VICTORY:
@@ -32,8 +30,6 @@ func GameLoop(key string) {
 		case EXIT:
 			return
 		}
-
-		c = rl.GetKeyPressed()
 
 	}
 }
