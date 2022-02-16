@@ -17,4 +17,4 @@ For local development and testing, a [Clemson Hackman API key](https://github.co
 ### Cross-compiling for Windows
 1. Install [Docker](https://www.docker.com/).
 2. Run ```docker build -t hackman-builder:latest .``` in the project root.
-3. Run ```docker run -rm -v ${PWD}:/src hackman-builder:latest make build_windows```
+3. Run ```docker run --rm -v ${PWD}:/src hackman-builder:latest make build_windows```
