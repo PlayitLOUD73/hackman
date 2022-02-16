@@ -35,5 +35,5 @@ run:
 
 clean:
 	go clean
-	rm -rf releases
-	rm .DS_Store
+	- rm -rf releases
+	- rm .DS_Store
