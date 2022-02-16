@@ -30,7 +30,7 @@ build_linux: setup
 
 build_release: build_windows build_darwin_intel build_darwin_arm
 
-run:
+run: build
 	./hangman
 
 clean:
