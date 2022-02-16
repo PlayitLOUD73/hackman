@@ -5,8 +5,8 @@ EXECUTABLE=hackman
 build:
 	go build -o ${EXECUTABLE}
 
-setup: clean
-	mkdir releases
+setup:
+	- mkdir releases
 	
 build_windows: setup
 	GOOS=windows CGO_ENABLED=1 CC=${CROSS_COMPILER} CGO_LDFLAGS="-static-libgcc" go build -o releases/${WINDOWS_EXECUTABLE} ./cmd/main
