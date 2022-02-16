@@ -1,5 +1,4 @@
-CROSS_COMPILER=/usr/local/bin/x86_64-w64-mingw32-gcc
-LINUX_CC=/usr/local/bin/x86_64-w64-mingw32-gcc
+CROSS_COMPILER=x86_64-w64-mingw32-gcc
 WINDOWS_EXECUTABLE=hackman.exe
 EXECUTABLE=hackman
 
@@ -10,7 +9,7 @@ setup: clean
 	mkdir releases
 	
 build_windows: setup
-	GOOS=windows CGO_ENABLED=1 CC=${CROSS_COMPILER} go build -o releases/${WINDOWS_EXECUTABLE} ./cmd/main
+	GOOS=windows CGO_ENABLED=1 CC=${CROSS_COMPILER} CGO_LDFLAGS="-static-libgcc" go build -o releases/${WINDOWS_EXECUTABLE} ./cmd/main
 	zip releases/hackman_windows.zip releases/${WINDOWS_EXECUTABLE}
 	rm releases/${WINDOWS_EXECUTABLE}
 
@@ -25,7 +24,7 @@ build_darwin_arm: setup
 	rm releases/${EXECUTABLE}
 
 build_linux: setup
-	GOOS=linux CGO_ENABLED=1 CC=${LINUX_CC} GOARCH=amd64 go build -o releases/${EXECUTABLE} ./cmd/main
+	GOOS=linux CGO_ENABLED=1 CC=gcc GOARCH=amd64 go build -o releases/${EXECUTABLE} ./cmd/main
 	zip releases/hackman_linux.zip releases/${EXECUTABLE}
 	rm releases/${EXECUTABLE}
 

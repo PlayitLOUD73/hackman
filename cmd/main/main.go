@@ -7,7 +7,7 @@ import (
 	game "github.com/PlayitLOUD73/hackman"
 )
 
-//go:embed secrets.txt
+//go:embed "secrets.txt"
 var rawKey string
 
 var key string
