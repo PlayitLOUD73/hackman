@@ -13,9 +13,13 @@ var background rl.Texture2D
 var title rl.Texture2D
 var button1 rl.Texture2D
 var button2 rl.Texture2D
+var flightpath rl.Music
 
 //go:embed "assets/*.png"
-var files embed.FS
+var images embed.FS
+
+//go:embed "assets/*.mp3"
+var music embed.FS
 
 // Init initializes a raylib window and sets the appropiate FPS target.
 // It also initializes textures
@@ -23,23 +27,30 @@ func Init() {
 	rl.InitWindow(800, 600, "Hackman")
 	rl.SetTargetFPS(60)
 
-	assets, _ := fs.ReadDir(files, "assets")
+	rl.InitAudioDevice()
 
-	backgroundRaw, _ := fs.ReadFile(files, "assets/"+assets[0].Name())
+	assets, _ := fs.ReadDir(images, "assets")
+
+	backgroundRaw, _ := fs.ReadFile(images, "assets/"+assets[0].Name())
 	var backgroundImg *rl.Image = rl.LoadImageFromMemory(".png", backgroundRaw, int32(len(backgroundRaw)))
 	background = rl.LoadTextureFromImage(backgroundImg)
 
-	button1Raw, _ := fs.ReadFile(files, "assets/"+assets[1].Name())
+	button1Raw, _ := fs.ReadFile(images, "assets/"+assets[1].Name())
 	var button1Img *rl.Image = rl.LoadImageFromMemory(".png", button1Raw, int32(len(button1Raw)))
 	button1 = rl.LoadTextureFromImage(button1Img)
 
-	button2Raw, _ := fs.ReadFile(files, "assets/"+assets[2].Name())
+	button2Raw, _ := fs.ReadFile(images, "assets/"+assets[2].Name())
 	var button2Img *rl.Image = rl.LoadImageFromMemory(".png", button2Raw, int32(len(button2Raw)))
 	button2 = rl.LoadTextureFromImage(button2Img)
 
-	titleRaw, _ := fs.ReadFile(files, "assets/"+assets[3].Name())
+	titleRaw, _ := fs.ReadFile(images, "assets/"+assets[3].Name())
 	var titleImg *rl.Image = rl.LoadImageFromMemory(".png", titleRaw, int32(len(titleRaw)))
 	title = rl.LoadTextureFromImage(titleImg)
+
+	musicList, _ := fs.ReadDir(music, "assets")
+
+	flightpathRaw, _ := fs.ReadFile(music, "assets/"+musicList[0].Name())
+	flightpath = rl.LoadMusicStreamFromMemory(".mp3", flightpathRaw, int32(len(flightpathRaw)))
 
 }
 
@@ -75,6 +86,12 @@ func DeInit() {
 	rl.UnloadTexture(background)
 	rl.UnloadTexture(title)
 	rl.UnloadTexture(button1)
+	rl.UnloadTexture(button2)
+
+	rl.StopMusicStream(flightpath)
+	rl.UnloadMusicStream(flightpath)
+	rl.CloseAudioDevice()
+
 	rl.CloseWindow()
 	os.Exit(0)
 }
