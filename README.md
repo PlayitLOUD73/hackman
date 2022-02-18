@@ -3,6 +3,9 @@ A hangman game written in Go and Raylib for the Clemson Hackman Competition.
 ### Challenge
 The challenge is simple, you must create a playable "hangman" game in any programming language/stack you'd like in 2 Weeks. 
 
+## About the Game
+All of the images in the game were made by me. Music and sound effects are from the public domain.
+
 ## Running
 Download and extract the zip file for your operating system and architecture.
 Double click to run.
@@ -21,7 +24,7 @@ For local development and testing, a [Clemson Hackman API key](https://github.co
 1. Install [Docker](https://www.docker.com/).
 2. Run ```docker build -t hackman-builder:latest .``` in the project root.
 3. Run ```docker run --rm -v ${PWD}:/src hackman-builder:latest make build_windows```
-## Compiling on Windows
+## Compiling on Windows (Not Tested)
 1. Install [MSYS2](https://www.msys2.org/)
 2. run in MSYS2 terminal: ```pacman -S mingw-w64-x86_64-go```
 3. Setup Windows-specific enviroment variables.
