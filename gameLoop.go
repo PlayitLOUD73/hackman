@@ -11,8 +11,13 @@ func GameLoop(key string) {
 	var controller GameController = *NewGameController()
 	controller.state = MAINMENU
 
+	rl.PlayMusicStream(flightpath)
+	controller.songPlaying = flightpath
+
 	for !rl.WindowShouldClose() {
 		rl.ClearBackground(rl.RayWhite)
+
+		rl.UpdateMusicStream(controller.songPlaying)
 
 		// Which part of the game am I in?
 		switch controller.state {
