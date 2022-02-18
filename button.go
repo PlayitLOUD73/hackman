@@ -4,6 +4,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+// Hitbox is a struct used to define a region for a button.
 type Hitbox struct {
 	xMax int
 	xMin int
@@ -11,12 +12,7 @@ type Hitbox struct {
 	yMin int
 }
 
-// HitboxLetter is used for on-screen keyboard
-type HitboxLetter struct {
-	dim Hitbox // dimensions
-	abc byte   // letter
-}
-
+// Button is a struct that is used for both buttons and for keys for the virtual keyboard.
 type Button struct {
 	texture  rl.Texture2D
 	isKey    bool
@@ -29,6 +25,8 @@ type Button struct {
 	text     string
 }
 
+// NewButton is a constructor to create a button and initialize it.
+// This is not used for keys.
 func NewButton(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, g GameState) *Button {
 
 	b := new(Button)
@@ -47,6 +45,7 @@ func NewButton(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, g GameS
 	return b
 }
 
+// NewKey is a constructor to create a button specificially for the on-screen keyboard.
 func NewKey(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, k byte) *Button {
 
 	b := new(Button)
@@ -65,6 +64,7 @@ func NewKey(t rl.Texture2D, xPos int, yPos int, c rl.Color, s string, k byte) *B
 	return b
 }
 
+// drawButtonText draws centered text on a button.
 func (b *Button) drawButtonText() {
 	font := 30
 	width := rl.MeasureText(b.text, int32(font))
@@ -73,17 +73,12 @@ func (b *Button) drawButtonText() {
 	rl.DrawText(b.text, int32(x), int32(y), int32(font), rl.Black)
 }
 
+// changeState is a helper function to change gamestates based
+// on a button's function.
 func (b *Button) changeState() GameState { return b.newState }
 
-/*
-func clickedLetters() byte {
-	x := rl.GetMouseX()
-	y := rl.GetMouseY()
-
-	return 0
-}
-*/
-
+// clickedButtons is a function to find if a button is clicked
+// when given an array of buttons.
 func clickedButtons(b []Button) int {
 
 	x := int(rl.GetMouseX())
@@ -100,6 +95,7 @@ func clickedButtons(b []Button) int {
 	return -1
 }
 
+// drawButtons is a function to draw all buttons in a button array.
 func drawButtons(b []Button) {
 
 	for i := 0; i < len(b); i++ {
