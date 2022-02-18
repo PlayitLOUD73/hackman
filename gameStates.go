@@ -96,8 +96,8 @@ func (g *GameController) gameOver() {
 
 	// button initialization
 	var buttons []Button
-	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
-	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
+	buttons = append(buttons, *NewButton(button1, ((rl.GetScreenWidth()/2 - 100) / 2), ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+500)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
 
 	if g.songPlaying != gameOverSong {
 		g.songPlaying = gameOverSong
@@ -156,8 +156,8 @@ func (g *GameController) vict() {
 
 	// Button initialization
 	var buttons []Button
-	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
-	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-100)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
+	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+500)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
 
 	// check for mouse clicks
 	g, buttons = mouseClick(rl.MouseLeftButton, buttons, g)
