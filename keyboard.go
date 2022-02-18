@@ -2,10 +2,12 @@ package hackman
 
 import rl "github.com/gen2brain/raylib-go/raylib"
 
+// Keyboard is a struct to represent a virtual on-screen keyboard.
 type Keyboard struct {
 	keys [26]Button
 }
 
+// NewKeyboard is a constructor to initialize a new keyboard.
 func NewKeyboard() *Keyboard {
 	k := new(Keyboard)
 	start := 105
@@ -80,6 +82,8 @@ func keysHelper(i int) byte {
 	return ' '
 }
 
+// This function converts a letter to its location on a real keyboard, where q is 0,
+// w is 1, etc.
 func keyConversion(i int) int {
 	switch i {
 	case 0:

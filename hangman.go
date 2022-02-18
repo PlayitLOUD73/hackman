@@ -36,6 +36,8 @@ type WordInfo struct {
 	alpha  [26]Letter
 }
 
+// fullyGuessed checks to see if a word is
+// fully guessed.
 func (w *WordInfo) fullyGuessed() bool {
 	for i := 0; i < len(w.list); i++ {
 		if !w.list[i].guessed {
@@ -45,6 +47,8 @@ func (w *WordInfo) fullyGuessed() bool {
 	return true
 }
 
+// Setup pulls a new word form the Hackman API and
+// intializes a WordInfo struct for use.
 func (w *WordInfo) Setup(length int, key string) {
 
 	w.word = api.GetWord(length, key)
@@ -69,6 +73,7 @@ func (w *WordInfo) Setup(length int, key string) {
 
 }
 
+// inWord checks to see if a letter is in a word.
 func (w *WordInfo) inWord(c int32, key Button) bool {
 
 	correct := false
@@ -98,10 +103,6 @@ func (w *WordInfo) drawWord() {
 	}
 
 }
-
-//var list [26]Letter
-
-//var Ans WordInfo // answer
 
 // CharToNum is a function to convert a letter
 // from the alphabet (in byte form) to its
@@ -167,15 +168,7 @@ func CharToNum(c byte) int {
 	return 0
 }
 
-// Setup initializes the data necessary
-// for the game to run. It takes in a
-// length to determine the size of the word.
-
-// inWord determines if a particular letter
-// is in the word. The function returns true
-// if the letter is in the word and false if
-// it is not.
-
+// subtracts a constant to stick 'a' at 0
 func uniToInt(c int32) int32 {
 	return c - 65
 }
