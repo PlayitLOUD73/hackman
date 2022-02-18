@@ -53,6 +53,7 @@ func (g *GameController) game() {
 		} else {
 			buttons[buttonMarker].tint = rl.Red
 			g.guesses--
+			rl.PlaySound(errorSound)
 		}
 	}
 

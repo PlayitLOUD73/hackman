@@ -14,6 +14,7 @@ var title rl.Texture2D
 var button1 rl.Texture2D
 var button2 rl.Texture2D
 var flightpath rl.Music
+var errorSound rl.Sound
 
 //go:embed "assets/*.png"
 var images embed.FS
@@ -49,7 +50,11 @@ func Init() {
 
 	musicList, _ := fs.ReadDir(music, "assets")
 
-	flightpathRaw, _ := fs.ReadFile(music, "assets/"+musicList[0].Name())
+	errorRaw, _ := fs.ReadFile(music, "assets/"+musicList[0].Name())
+	errorWave := rl.LoadWaveFromMemory(".mp3", errorRaw, int32(len(errorRaw)))
+	errorSound = rl.LoadSoundFromWave(errorWave)
+
+	flightpathRaw, _ := fs.ReadFile(music, "assets/"+musicList[1].Name())
 	flightpath = rl.LoadMusicStreamFromMemory(".mp3", flightpathRaw, int32(len(flightpathRaw)))
 
 }
@@ -72,6 +77,7 @@ func mouseClick(mouse int32, b []Button, g *GameController) (*GameController, []
 				} else {
 					b[clicked].tint = rl.Red
 					g.guesses--
+					rl.PlaySound(errorSound)
 				}
 			} else {
 				g.state = b[clicked].changeState()
@@ -90,6 +96,7 @@ func DeInit() {
 
 	rl.StopMusicStream(flightpath)
 	rl.UnloadMusicStream(flightpath)
+	rl.UnloadSound(errorSound)
 	rl.CloseAudioDevice()
 
 	rl.CloseWindow()
