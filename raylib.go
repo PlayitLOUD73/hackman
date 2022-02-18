@@ -62,7 +62,6 @@ func mouseClick(mouse int32, b []Button, g *GameController) (*GameController, []
 					b[clicked].tint = rl.Red
 					g.guesses--
 				}
-				//fmt.Println()
 			} else {
 				g.state = b[clicked].changeState()
 			}

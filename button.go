@@ -91,7 +91,6 @@ func clickedButtons(b []Button) int {
 
 	for i := 0; i < len(b); i++ {
 		if x < b[i].dim.xMax && x > b[i].dim.xMin {
-			//fmt.Print("yes")
 			if y < b[i].dim.yMax && y > b[i].dim.yMin {
 				return i
 			}

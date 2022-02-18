@@ -1,7 +1,6 @@
 package hackman
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/PlayitLOUD73/hackman/api"
@@ -51,9 +50,6 @@ func (w *WordInfo) Setup(length int, key string) {
 	w.word = api.GetWord(length, key)
 	w.length = len(w.word)
 
-	// for debugging and testing
-	fmt.Printf("%s\n", w.word)
-
 	// initializes w
 	for i := 0; i < len(w.word); i++ {
 		var temp WordLetter
@@ -70,7 +66,6 @@ func (w *WordInfo) Setup(length int, key string) {
 			}
 		}
 	}
-	fmt.Print("\n")
 
 }
 
@@ -78,7 +73,6 @@ func (w *WordInfo) inWord(c int32, key Button) bool {
 
 	correct := false
 	key.tint = rl.Red
-	fmt.Println(key)
 	for i := 0; i < len(w.word); i++ {
 		if int(c) == CharToNum(w.word[i]) {
 			w.list[i].guessed = true
