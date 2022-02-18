@@ -15,6 +15,8 @@ var button1 rl.Texture2D
 var button2 rl.Texture2D
 var flightpath rl.Music
 var errorSound rl.Sound
+var typeSound rl.Sound
+var gameOverSong rl.Music
 
 //go:embed "assets/*.png"
 var images embed.FS
@@ -57,6 +59,13 @@ func Init() {
 	flightpathRaw, _ := fs.ReadFile(music, "assets/"+musicList[1].Name())
 	flightpath = rl.LoadMusicStreamFromMemory(".mp3", flightpathRaw, int32(len(flightpathRaw)))
 
+	gameOverRaw, _ := fs.ReadFile(music, "assets/"+musicList[2].Name())
+	gameOverSong = rl.LoadMusicStreamFromMemory(".mp3", gameOverRaw, int32(len(gameOverRaw)))
+
+	typeRaw, _ := fs.ReadFile(music, "assets/"+musicList[3].Name())
+	typeWave := rl.LoadWaveFromMemory(".mp3", typeRaw, int32(len(errorRaw)))
+	typeSound = rl.LoadSoundFromWave(typeWave)
+
 }
 
 // drawLetter draws an individual letter at the given position.
@@ -74,6 +83,7 @@ func mouseClick(mouse int32, b []Button, g *GameController) (*GameController, []
 			if b[clicked].isKey {
 				if g.ans.inWord(int32(CharToNum(b[clicked].key)), b[clicked]) {
 					b[clicked].tint = rl.Green
+					rl.PlaySound(typeSound)
 				} else {
 					b[clicked].tint = rl.Red
 					g.guesses--
@@ -95,8 +105,11 @@ func DeInit() {
 	rl.UnloadTexture(button2)
 
 	rl.StopMusicStream(flightpath)
+	rl.StopMusicStream(gameOverSong)
 	rl.UnloadMusicStream(flightpath)
 	rl.UnloadSound(errorSound)
+	rl.UnloadSound(typeSound)
+	rl.UnloadMusicStream(gameOverSong)
 	rl.CloseAudioDevice()
 
 	rl.CloseWindow()

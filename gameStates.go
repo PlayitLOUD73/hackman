@@ -24,11 +24,12 @@ const (
 // sections of the game. It also holds variables that must be
 // changed between frames.
 type GameController struct {
-	state    GameState
-	ans      WordInfo
-	guesses  int
-	scroll   int
-	keyboard Keyboard
+	state       GameState
+	ans         WordInfo
+	guesses     int
+	scroll      int
+	keyboard    Keyboard
+	songPlaying rl.Music
 }
 
 // NewGameController is a constructor to create a new GameController.
@@ -41,6 +42,12 @@ func NewGameController() *GameController {
 func (g *GameController) game() {
 	buttons := g.keyboard.keys[:]
 
+	if g.songPlaying != flightpath {
+		g.songPlaying = flightpath
+		rl.StopMusicStream(gameOverSong)
+		rl.PlayMusicStream(flightpath)
+	}
+
 	var darkGreen rl.Color = rl.Color{0x11, 0x28, 0x21, 0xFF}
 
 	c := rl.GetKeyPressed()
@@ -49,6 +56,7 @@ func (g *GameController) game() {
 	if c != 0 {
 		buttonMarker := keyConversion(int(uniToInt(c)))
 		if g.ans.inWord(uniToInt(c), buttons[buttonMarker]) {
+			rl.PlaySound(typeSound)
 			buttons[buttonMarker].tint = rl.Green
 		} else {
 			buttons[buttonMarker].tint = rl.Red
@@ -90,6 +98,12 @@ func (g *GameController) gameOver() {
 	var buttons []Button
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2-200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Red, "Exit", EXIT))
 	buttons = append(buttons, *NewButton(button1, (rl.GetScreenWidth()/2+200)/2, ((rl.GetScreenHeight() + 50) / 2), rl.Green, "New Game", NEWGAME))
+
+	if g.songPlaying != gameOverSong {
+		g.songPlaying = gameOverSong
+		rl.StopMusicStream(flightpath)
+		rl.PlayMusicStream(gameOverSong)
+	}
 
 	// check for mouse clicks
 	g, buttons = mouseClick(rl.MouseLeftButton, buttons, g)
